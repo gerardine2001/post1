@@ -2,6 +2,7 @@ package com.example.mypost
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -21,11 +22,13 @@ class MainActivity : AppCompatActivity() {
         request.enqueue(object : Callback<List<Post>>{
             override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
                 if (response.isSuccessful){
-                    var postList=response.body()!!
-                    rvUser=findViewById(R.id.rvUser)
-                    rvUser.layoutManager=LinearLayoutManager(baseContext)
-                    var userAdapter=MyAdapter(baseContext,postList)
-                    rvUser.adapter=userAdapter
+                    var postList=response.body()
+                    if (postList!=null) {
+                        rvUser = findViewById(R.id.rvUser)
+                        rvUser.layoutManager = LinearLayoutManager(baseContext)
+                        var userAdapter = MyAdapter(baseContext, postList)
+                        rvUser.adapter = userAdapter
+                    }
 
 
 
@@ -35,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Post>>, t: Throwable) {
-//                Toast.makeText(baseContext,t.message,Toast.LENGTH_LONG).show()
+                Toast.makeText(baseContext,t.message, Toast.LENGTH_LONG).show()
             }
 
         })
